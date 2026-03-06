@@ -1,46 +1,46 @@
 # =============================================================================
 # Cloud Armor — WAF security policy
+# NOTE: Disabled for free trial projects (SECURITY_POLICIES quota = 0).
+# Uncomment when using a billing account with Cloud Armor access.
 # =============================================================================
 
-resource "google_compute_security_policy" "waf" {
-  name    = "waf-policy-${var.environment}"
-  project = var.project_id
-
-  # Default: allow all traffic
-  rule {
-    action   = "allow"
-    priority = "2147483647"
-    match {
-      versioned_expr = "SRC_IPS_V1"
-      config {
-        src_ip_ranges = ["*"]
-      }
-    }
-    description = "Default allow"
-  }
-
-  # Rate limiting: max 100 requests per minute per IP
-  rule {
-    action   = "rate_based_ban"
-    priority = "1000"
-    match {
-      versioned_expr = "SRC_IPS_V1"
-      config {
-        src_ip_ranges = ["*"]
-      }
-    }
-    rate_limit_options {
-      conform_action = "allow"
-      exceed_action  = "deny(429)"
-      rate_limit_threshold {
-        count        = 100
-        interval_sec = 60
-      }
-      ban_duration_sec = 300
-    }
-    description = "Rate limit: 100 req/min per IP"
-  }
-}
+# resource "google_compute_security_policy" "waf" {
+#   name    = "waf-policy-${var.environment}"
+#   project = var.project_id
+#
+#   rule {
+#     action   = "allow"
+#     priority = "2147483647"
+#     match {
+#       versioned_expr = "SRC_IPS_V1"
+#       config {
+#         src_ip_ranges = ["*"]
+#       }
+#     }
+#     description = "Default allow"
+#   }
+#
+#   rule {
+#     action   = "rate_based_ban"
+#     priority = "1000"
+#     match {
+#       versioned_expr = "SRC_IPS_V1"
+#       config {
+#         src_ip_ranges = ["*"]
+#       }
+#     }
+#     rate_limit_options {
+#       conform_action = "allow"
+#       exceed_action  = "deny(429)"
+#       rate_limit_threshold {
+#         count        = 100
+#         interval_sec = 60
+#       }
+#       ban_duration_sec = 300
+#     }
+#     description = "Rate limit: 100 req/min per IP"
+#   }
+# }
 
 # =============================================================================
 # Global IP Address
@@ -63,7 +63,7 @@ resource "google_compute_backend_service" "frontend" {
   port_name             = "http"
   timeout_sec           = 30
   load_balancing_scheme = "EXTERNAL_MANAGED"
-  security_policy       = google_compute_security_policy.waf.id
+  # security_policy       = google_compute_security_policy.waf.id  # Enable when Cloud Armor quota available
 
   # Cloud CDN enabled for static content
   enable_cdn = true
@@ -92,7 +92,7 @@ resource "google_compute_backend_service" "backend" {
   port_name             = "http"
   timeout_sec           = 60
   load_balancing_scheme = "EXTERNAL_MANAGED"
-  security_policy       = google_compute_security_policy.waf.id
+  # security_policy       = google_compute_security_policy.waf.id  # Enable when Cloud Armor quota available
 
   enable_cdn = false # No CDN for API
 
