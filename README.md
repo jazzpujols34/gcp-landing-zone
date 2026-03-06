@@ -5,23 +5,7 @@
 
 Deploy a production-grade 3-tier application on Google Cloud with a single command. Built to demonstrate GCP + Terraform best practices for anyone learning Infrastructure as Code.
 
-```
-Internet
-    |
-Global HTTPS Load Balancer + Cloud CDN
-    |
-+---+---+
-|       |
-nginx   Flask API       <-- GCE Managed Instance Groups
-|       |
-|   +---+---+
-|   |       |
-| Cloud SQL  Cloud Storage
-| (private)  (IAM-controlled)
-|   |
-+---+
-Cloud NAT (outbound)
-```
+![Architecture Diagram](docs/architecture.png)
 
 ## What is This?
 
