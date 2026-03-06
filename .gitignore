@@ -1,10 +1,19 @@
-# Terraform
+# Terraform state (contains secrets + resource IDs)
 *.tfstate
 *.tfstate.backup
 *.tfstate.lock.info
 .terraform/
+tfplan
+
+# .terraform.lock.hcl — ignored for this demo repo.
+# In a team project, commit it to pin provider versions across machines.
+# See: https://developer.hashicorp.com/terraform/language/files/dependency-lock
 .terraform.lock.hcl
+
+# User config (contains passwords and project IDs)
 terraform.tfvars
+
+# Debug
 crash.log
 
 # OS
