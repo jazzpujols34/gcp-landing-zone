@@ -1,0 +1,20 @@
+# Copy this file to terraform.tfvars and fill in your values.
+# terraform.tfvars is gitignored — never commit real values.
+
+project_id  = "your-gcp-project-id"
+region      = "asia-east1"
+zone        = "asia-east1-b"
+environment = "demo"
+
+# Compute
+frontend_machine_type = "e2-micro"
+backend_machine_type  = "e2-micro"
+use_preemptible       = true
+frontend_min_replicas = 1
+frontend_max_replicas = 3
+backend_min_replicas  = 1
+backend_max_replicas  = 3
+
+# Database
+db_tier     = "db-g1-small"
+db_password = "CHANGE_ME_use_a_strong_password"
