@@ -47,6 +47,12 @@ resource "google_compute_router_nat" "nat" {
   nat_ip_allocate_option             = "AUTO_ONLY"
   source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
 
+  # Both subnets need NAT — instances have no public IPs (traffic goes through LB)
+  subnetwork {
+    name                    = google_compute_subnetwork.public.id
+    source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
+  }
+
   subnetwork {
     name                    = google_compute_subnetwork.private.id
     source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
