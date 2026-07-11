@@ -1,6 +1,5 @@
 # Terraform state (contains secrets + resource IDs)
-*.tfstate
-*.tfstate.backup
+*.tfstate*
 *.tfstate.lock.info
 .terraform/
 tfplan
